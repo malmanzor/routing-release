@@ -16,6 +16,7 @@ templates:
   pre-start: bin/pre-start
   route_registrar_ctl.erb: bin/route_registrar_ctl
   registrar_settings.yml.erb: config/registrar_settings.yml
+  route_registrar_drain.erb: bin/drain
 
 properties:
   nats.machines:
@@ -91,3 +92,11 @@ properties:
         port: 8081
         uris:
         - proxy-cf-mysql.system.domain
+  route_registrar.stop_on_drain:
+    description: |
+      * Boolean determining if the route registrar should be stopped
+        when the drain script is run.
+      * This is useful when the registered routes should not be reachable
+        while drain scripts are run.
+      * If unset the drain script will not stop the route registrar.
+    example: true

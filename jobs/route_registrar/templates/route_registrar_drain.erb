@@ -1,0 +1,21 @@
+#!/bin/bash
+
+set -e # exit immediately if a simple command exits with a non-zero status
+set -u # report the usage of uninitialized variables
+
+RUN_DIR=/var/vcap/sys/run/route_registrar
+LOG_FILE=/var/vcap/sys/log/route_registrar/route_registrar.log
+ERROR_LOG=/var/vcap/sys/log/route_registrar/route_registrar.err.log
+
+PIDFILE=${RUN_DIR}/route_registrar.pid
+
+<% if_p('route_registrar.stop_on_drain') do |should_stop| %>
+    <% if true == should_stop then %>
+source /var/vcap/packages/routing_utils/pid_utils.sh
+
+kill_and_wait $PIDFILE >> $LOG_FILE 2>>ERROR_LOG
+    <% end %>
+<% end %>
+
+echo
+exit 0
